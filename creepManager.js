@@ -24,12 +24,12 @@ module.exports = {
         var restockCount = _.sum(Game.creeps, (c) => c.memory.role == 'restock');
 
         // Spawning creep.
-        if (harvesterCount < maxHarvester) Game.spawns.Spawn1.createCreep([MOVE, MOVE, WORK, WORK, WORK, WORK, WORK], null, { role: 'harvester' });
+        if (harvesterCount < maxHarvester) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, CARRY, WORK, WORK, WORK, WORK, WORK], null, { role: 'harvester' });
         else if (transportCount < maxTransport) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY], null, { role: 'transport' });
-        else if (restockCount < maxRestock) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, WORK], null, { role: 'restock' });
+        else if (restockCount < maxRestock) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, WORK], null, { role: 'restock' });
         else {            
-            if (upgraderCount < maxUpgrader) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK], null, { role: 'upgrader' });
-            if (builderCount < maxBuilder) Game.spawns.Spawn1.createCreep([MOVE, MOVE, CARRY, CARRY, WORK, WORK, WORK], null, { role: 'builder' });
+            if (upgraderCount < maxUpgrader) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK], null, { role: 'upgrader' });
+            if (builderCount < maxBuilder) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK, WORK, WORK], null, { role: 'builder' });
         }        
 
     },
@@ -51,6 +51,9 @@ module.exports = {
             switch (creep.memory.role) {
                 case 'harvester':
                     roleHarvester.work(creep);
+                    break;
+                case 'harvesterLink':
+                    roleHarvester.linkWork(creep);
                     break;
                 case 'transport':
                     roleTransport.work(creep);
