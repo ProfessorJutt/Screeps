@@ -3,6 +3,7 @@ var roleHarvester = require('creepRoleHarvester');
 var roleRestock = require('creepRoleRestock');
 var roleTransport = require('creepRoleTransport');
 var roleUpgrader = require('creepRoleUpgrader');
+var roleScout = require('creepRoleScout');
 
 module.exports = {
 
@@ -15,6 +16,7 @@ module.exports = {
         var maxUpgrader = 2;
         var maxBuilder = 2;
         var maxRestock = 2;
+        var maxScout = 1;
 
         // Creep count
         var harvesterCount = _.sum(Game.creeps, (c) => c.memory.role == 'harvester');
@@ -22,15 +24,17 @@ module.exports = {
         var upgraderCount = _.sum(Game.creeps, (c) => c.memory.role == 'upgrader');
         var builderCount = _.sum(Game.creeps, (c) => c.memory.role == 'builder');
         var restockCount = _.sum(Game.creeps, (c) => c.memory.role == 'restock');
+        var scoutCount = _.sum(Game.creeps, (c) => c.memory.role == 'scout');
 
         // Spawning creep.
-        if (harvesterCount < maxHarvester) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, CARRY, WORK, WORK, WORK, WORK, WORK], null, { role: 'harvester' });
-        else if (transportCount < maxTransport) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY], null, { role: 'transport' });
+        if (harvesterCount < maxHarvester) Game.spawns.Spawn1.createCreep([MOVE, MOVE, WORK, WORK, WORK, WORK, WORK], null, { role: 'harvester' });
+        else if (transportCount < maxTransport) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY], null, { role: 'transport' });
         else if (restockCount < maxRestock) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, WORK], null, { role: 'restock' });
         else {            
-            if (upgraderCount < maxUpgrader) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK], null, { role: 'upgrader' });
-            if (builderCount < maxBuilder) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK, WORK, WORK], null, { role: 'builder' });
-        }        
+            if (upgraderCount < maxUpgrader) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK], null, { role: 'upgrader' });
+            if (builderCount < maxBuilder) Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK], null, { role: 'builder' });
+            if (scoutCount < maxScout) Game.spawns.Spawn1.createCreep([MOVE], null, { role: 'scout' });
+        }    
 
     },
 
@@ -66,6 +70,9 @@ module.exports = {
                     break;
                 case 'restock':
                     roleRestock.work(creep);
+                    break;
+                case 'scout':
+                    roleScout.work(creep);
                     break;
                 default:
                     creep.suicide();
